@@ -1,0 +1,134 @@
+
+
+
+<!--Include All Scripts -->
+<link href="video-js-6.2.7/video-js.css" rel="stylesheet">
+<script src="video-js-6.2.7/video.js"></script>
+
+<!-- videojs-contrib-ads -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-ads/5.0.4-0/videojs-contrib-ads.css" rel="stylesheet">
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-ads/5.0.4-0/videojs-contrib-ads.js"></script>
+-->
+<script src="video-js-6.2.7/videojs-contrib-ads.js"></script>
+<!--resolution-switcher-->
+<link href="video-js-6.2.7/videojs-resolution-switcher.css" rel="stylesheet">
+<script src="video-js-6.2.7/videojs-resolution-switcher.js"></script>
+
+<link href="video-js-6.2.7/jppolv.css" rel="stylesheet">
+
+<!--hls-->
+<script register-percent="100" src="video-js-6.2.7/hola_videojs_hls.js"></script>
+
+<!--panorama-->
+<link href="video-js-6.2.7/panorama.css" rel="stylesheet">
+<script src="video-js-6.2.7/three.js"></script>
+<script src="video-js-6.2.7/videojs-panorama.v5.min.js"></script>
+<!--Youtube-->
+<script src="video-js-6.2.7/Youtube.js"></script>
+<!--watermark-->
+<link href="video-js-6.2.7/watermark.css" rel="stylesheet">
+<script src="video-js-6.2.7/watermark.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.10.1/videojs-contrib-hls.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- overlays -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-overlay/1.1.4/videojs-overlay.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-overlay/1.1.4/videojs-overlay.js"></script>
+<style>
+.video-js .vjs-overlay-background {
+ width:90%;
+}
+
+.vjs-overlay.vjs-overlay-bottom-left {
+      font-size: 1.5em;
+      width: 60%;
+      color: red;
+      background-color: black;      
+      left: 20%;
+      right: 20%;
+ } 
+ .video-js .vjs-overlay-bottom-left {
+    bottom: 0.5em;
+}
+</style>
+
+
+
+<div class="player-block">
+  <video id="video_1"
+    data-account="3676484087001"
+    data-player="4k1SOaZFe"
+    data-embed="default"
+    class="video-js" controls=""></video>
+  <p id="videoName"></p>
+  <p id="timeRemaining"></p>
+</div>
+
+
+<script src="//solutions.brightcove.com/bcls/scripts/secondsToTime.js"></script>
+
+<script type="text/JavaScript">
+    var myPlayer,
+      eVideoName = document.getElementById("videoName"),
+      eTimeRemaining = document.getElementById("timeRemaining"),
+      timeRemaining,
+      totalTime,
+      currentVideoIndex = 0,
+      newVideo,
+      firstVideo = true,
+      playlistData = [{
+        "name": "Great Blue Heron",
+        "thumbnailURL": "//solutions.brightcove.com/bcls/assets/images/Great-Blue-Heron.png",
+        "sources": [{
+          "type": "application/x-mpegURL",
+          "src": "https://d2bj9mscp1erqx.cloudfront.net/incdev/3ce9cd11-d289-4446-a44d-647177d70c55/master.m3u8"
+        }, {
+          "type": "video/mp4",
+          "src": "//solutions.brightcove.com/bcls/assets/videos/Great-Blue-Heron.mp4"
+        }]
+      }, {
+        "name": "Birds of a Feather",
+        "thumbnailURL": "//solutions.brightcove.com/bcls/assets/images/BirdsOfAFeather.png",
+        "sources": [{
+          "type": "video/mp4",
+          "src": "//solutions.brightcove.com/bcls/assets/videos/BirdsOfAFeather.mp4"
+        }]
+      }, {
+        "name": "Sea Marvels",
+        "thumbnailURL": "//solutions.brightcove.com/bcls/assets/images/Sea Marvels.png",
+        "sources": [{
+          "type": "video/mp4",
+          "src": "//solutions.brightcove.com/bcls/assets/videos/Sea-Marvels.mp4"
+        }]
+      }];
+    function loadVideo() {
+      if (currentVideoIndex < playlistData.length) {
+        // load the new video
+        myPlayer.src(playlistData[currentVideoIndex].sources);
+        // update the video title display
+        eVideoName.innerHTML = "Now playing: <strong>" + playlistData[currentVideoIndex].name + "</strong>";
+        // increment the current video index
+        currentVideoIndex++;
+        // play the video
+        if (firstVideo) {
+          firstVideo = false;
+        } else {
+          myPlayer.play();
+        }
+      }
+    };
+    videojs("video_1").ready(function () {
+      myPlayer = this;
+      myPlayer.on("ended", function () {
+        loadVideo();
+      });
+      myPlayer.on("timeupdate", function (evt) {
+        timeRemaining = Math.round(myPlayer.duration() - myPlayer.currentTime());
+        totalTime = BCLSsecondsToTime(timeRemaining);
+        eTimeRemaining.innerHTML = "Time remaining = " + totalTime.m + ':' + totalTime.s;
+      });
+      // load the first video
+      loadVideo();
+    });
+  </script>

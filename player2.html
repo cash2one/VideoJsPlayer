@@ -1,0 +1,172 @@
+
+
+
+<!--Include All Scripts -->
+<link href="video-js-6.2.7/video-js.css" rel="stylesheet">
+<script src="video-js-6.2.7/video.js"></script>
+
+<!-- videojs-contrib-ads -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-ads/5.0.4-0/videojs-contrib-ads.css" rel="stylesheet">
+<!--<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-ads/5.0.4-0/videojs-contrib-ads.js"></script>
+-->
+<script src="video-js-6.2.7/videojs-contrib-ads.js"></script>
+<!--resolution-switcher-->
+<link href="video-js-6.2.7/videojs-resolution-switcher.css" rel="stylesheet">
+<script src="video-js-6.2.7/videojs-resolution-switcher.js"></script>
+
+<link href="video-js-6.2.7/jppolv.css" rel="stylesheet">
+
+<!--hls-->
+<script register-percent="100" src="video-js-6.2.7/hola_videojs_hls.js"></script>
+
+<!--panorama-->
+<link href="video-js-6.2.7/panorama.css" rel="stylesheet">
+<script src="video-js-6.2.7/three.js"></script>
+<script src="video-js-6.2.7/videojs-panorama.v5.min.js"></script>
+<!--Youtube-->
+<script src="video-js-6.2.7/Youtube.js"></script>
+<!--watermark-->
+<link href="video-js-6.2.7/watermark.css" rel="stylesheet">
+<script src="video-js-6.2.7/watermark.js"></script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-contrib-hls/5.10.1/videojs-contrib-hls.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
+<!-- overlays -->
+<link href="https://cdnjs.cloudflare.com/ajax/libs/videojs-overlay/1.1.4/videojs-overlay.css" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/videojs-overlay/1.1.4/videojs-overlay.js"></script>
+
+
+<style>
+.video_1-dimensions {
+    width: 100%;
+    height: 80%;
+}
+  /* override default styles for overlay */
+  .video-js .vjs-overlay {
+    width: 100%;
+    height: 100%;
+    margin: auto;
+    left: 0;
+	opacity; 0.5;
+	background: none;
+  }
+  /* hide the overlay */
+  .hide-overlay .vjs-overlay {
+    display: none;
+  }
+</style>
+
+
+<div style="width:100%; margin:0 auto;" class="player-block">
+  <video id="video_1" data-embed="default" class="video-js" controls="" height="450" width="680"></video>
+  
+  <p id="videoName"></p>
+  <p id="timeRemaining" style="display:none"></p>
+  
+</div>
+
+
+<script src="//solutions.brightcove.com/bcls/scripts/secondsToTime.js"></script>
+
+<script type="text/JavaScript">
+    var myPlayer,
+      eVideoName = document.getElementById("videoName"),
+      eTimeRemaining = document.getElementById("timeRemaining"),
+      timeRemaining,
+	  ellaspedTime,
+      totalTime,
+      currentVideoIndex = 0,
+      newVideo,
+      firstVideo = true,
+      playlistData = [{
+        "name": "Sample Program1",
+		"thumbnailURL": "https://d2bj9mscp1erqx.cloudfront.net/images/ZZ9q5tmAd8iZ-1500545486759-HRypH2HV2fm2.jpg",
+        
+        "sources": [{
+          "type": "application/x-mpegURL",
+          "src": "https://d2bj9mscp1erqx.cloudfront.net/incdev/47798c7a-48dc-497c-a98f-dfb536b61a2c/master.m3u8"
+        }, {
+          "type": "video/mp4",
+          "src": "//solutions.brightcove.com/bcls/assets/videos/Great-Blue-Heron.mp4"
+        }]
+      }, {
+        "name": "Sample2",
+        "thumbnailURL": "https://d2bj9mscp1erqx.cloudfront.net/images/ZZ9q5tmAd8iZ-1500545486759-HRypH2HV2fm2.jpg",
+        "sources": [{
+          "type": "application/x-mpegURL",
+		  "src": "https://d2bj9mscp1erqx.cloudfront.net/incdev/3ce9cd11-d289-4446-a44d-647177d70c55/master.m3u8"
+          
+        }]
+      }];
+	  
+	  
+	 
+			
+    function loadVideo() {
+      if (currentVideoIndex < playlistData.length) {
+        // load the new video
+        myPlayer.src(playlistData[currentVideoIndex].sources);
+        // update the video title display
+        eVideoName.innerHTML = "Now playing: <strong>" + playlistData[currentVideoIndex].name + "</strong>";
+        // increment the current video index
+        currentVideoIndex++;
+        // play the video
+        if (firstVideo) {
+          firstVideo = false;
+        } else {
+          myPlayer.play();
+        }
+      }
+    };
+	
+	function loadNextVideo() {
+      myPlayer.addClass("hide-overlay");
+		loadVideo();
+    };
+	
+    videojs("video_1").ready(function () {
+      myPlayer = this;
+	  	  
+      myPlayer.on("ended", function () {
+		
+        loadVideo();
+      });
+	  
+	  
+	  
+	  myPlayer.overlay({
+          content: 'Apache RTR',
+          debug: true,
+          overlays: [{
+        	content: "<div id='ol' style='width:90%'><a href='#' onclick='loadNextVideo();'><img src='https://media.giphy.com/media/3o7btVjm5CqTaMclHy/giphy.gif' style='width:80%; height:80%' class='img-responsive' ></a></div>",
+              
+            start: 'play',
+            end: 'pause'
+          } ]
+        });
+	  
+	  
+      myPlayer.on("timeupdate", function (evt) {
+        timeRemaining = Math.round(myPlayer.duration() - myPlayer.currentTime());
+        totalTime = BCLSsecondsToTime(timeRemaining);
+        //eTimeRemaining.innerHTML = "Time remaining = " + timeRemaining + '/' + totalTime.m + ':' + totalTime.s;
+		
+		ellaspedTime = myPlayer.currentTime();
+		
+		eTimeRemaining.innerHTML = "Time gone = " + ellaspedTime +"/"+currentVideoIndex;
+		
+		if (ellaspedTime > 10) {
+			if (currentVideoIndex == 1) {
+				myPlayer.addClass("hide-overlay");
+				loadVideo();
+			}
+			//firstVideo = true;
+		}
+				
+				
+      });
+      // load the first video
+      loadVideo();
+    });
+  </script>

@@ -1,0 +1,58 @@
+.jppolvp.vjs-paused .vjs-big-play-button{
+  display: block;
+}
+
+.jppolvp.vjs-paused.vjs-ad-playing .vjs-big-play-button{
+  display: none;
+}
+
+.jppolvp.vjs-ad-playing .vjs-loading-spinner{
+  display: none;
+}
+
+.jppolvp-skipButton:empty{
+  display: none;
+}
+
+.jppolvp.video-js .vjs-big-play-button{
+  top: calc(50% - .75em);
+  left: calc(50% - 1.5em);
+}
+
+.jppolvp.video-js .vjs-overlay-background{
+  background-color: rgba(50,50,50,.75);
+  border-radius: 1px;
+  padding: 5px 10px;
+  min-width: 100px;
+  text-align: left;
+}
+
+.jppolvp.video-js .vjs-overlay{
+  color: #eee;
+  font-size: 12px;
+}
+
+
+.jppolvp.video-js.vjs-ad-playing .vjs-overlay{
+  display: none;
+}
+
+.jppolvp-skipButton{
+    position: absolute;
+    font-size: 13px;
+    top: 5px;
+    right: 5px;
+    padding: 10px;
+    border: 2px solid rgba(110, 110, 110,.5);
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: rgba(200,200,200,.3);
+}
+
+.jppolvp-adClickLayer{
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+}
